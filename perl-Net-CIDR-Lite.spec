@@ -4,7 +4,7 @@
 #
 Name     : perl-Net-CIDR-Lite
 Version  : 0.21
-Release  : 10
+Release  : 11
 URL      : https://cpan.metacpan.org/authors/id/D/DO/DOUGW/Net-CIDR-Lite-0.21.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/D/DO/DOUGW/Net-CIDR-Lite-0.21.tar.gz
 Source1  : http://http.debian.net/debian/pool/main/libn/libnet-cidr-lite-perl/libnet-cidr-lite-perl_0.21-2.debian.tar.xz
@@ -12,6 +12,7 @@ Summary  : Perl extension for merging IPv4 or IPv6 CIDR addresses
 Group    : Development/Tools
 License  : Artistic-1.0 GPL-1.0
 Requires: perl-Net-CIDR-Lite-license = %{version}-%{release}
+Requires: perl-Net-CIDR-Lite-perl = %{version}-%{release}
 BuildRequires : buildreq-cpan
 
 %description
@@ -24,6 +25,7 @@ To install this module type the following:
 Summary: dev components for the perl-Net-CIDR-Lite package.
 Group: Development
 Provides: perl-Net-CIDR-Lite-devel = %{version}-%{release}
+Requires: perl-Net-CIDR-Lite = %{version}-%{release}
 
 %description dev
 dev components for the perl-Net-CIDR-Lite package.
@@ -37,18 +39,28 @@ Group: Default
 license components for the perl-Net-CIDR-Lite package.
 
 
+%package perl
+Summary: perl components for the perl-Net-CIDR-Lite package.
+Group: Default
+Requires: perl-Net-CIDR-Lite = %{version}-%{release}
+
+%description perl
+perl components for the perl-Net-CIDR-Lite package.
+
+
 %prep
 %setup -q -n Net-CIDR-Lite-0.21
-cd ..
-%setup -q -T -D -n Net-CIDR-Lite-0.21 -b 1
+cd %{_builddir}
+tar xf %{_sourcedir}/libnet-cidr-lite-perl_0.21-2.debian.tar.xz
+cd %{_builddir}/Net-CIDR-Lite-0.21
 mkdir -p deblicense/
-mv %{_topdir}/BUILD/debian/* %{_topdir}/BUILD/Net-CIDR-Lite-0.21/deblicense/
+cp -r %{_builddir}/debian/* %{_builddir}/Net-CIDR-Lite-0.21/deblicense/
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
+export LANG=C.UTF-8
 if test -f Makefile.PL; then
 %{__perl} Makefile.PL
 make  %{?_smp_mflags}
@@ -58,7 +70,7 @@ else
 fi
 
 %check
-export LANG=C
+export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
@@ -67,7 +79,7 @@ make TEST_VERBOSE=1 test
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/perl-Net-CIDR-Lite
-cp deblicense/copyright %{buildroot}/usr/share/package-licenses/perl-Net-CIDR-Lite/deblicense_copyright
+cp %{_builddir}/Net-CIDR-Lite-0.21/deblicense/copyright %{buildroot}/usr/share/package-licenses/perl-Net-CIDR-Lite/46339a1166e8b5a59b054ebdbf37fe126a2bfeb4
 if test -f Makefile.PL; then
 make pure_install PERL_INSTALL_ROOT=%{buildroot} INSTALLDIRS=vendor
 else
@@ -80,7 +92,6 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files
 %defattr(-,root,root,-)
-/usr/lib/perl5/vendor_perl/5.28.2/Net/CIDR/Lite.pm
 
 %files dev
 %defattr(-,root,root,-)
@@ -88,4 +99,8 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/perl-Net-CIDR-Lite/deblicense_copyright
+/usr/share/package-licenses/perl-Net-CIDR-Lite/46339a1166e8b5a59b054ebdbf37fe126a2bfeb4
+
+%files perl
+%defattr(-,root,root,-)
+/usr/lib/perl5/vendor_perl/5.30.1/Net/CIDR/Lite.pm
