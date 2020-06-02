@@ -4,7 +4,7 @@
 #
 Name     : perl-Net-CIDR-Lite
 Version  : 0.21
-Release  : 12
+Release  : 13
 URL      : https://cpan.metacpan.org/authors/id/D/DO/DOUGW/Net-CIDR-Lite-0.21.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/D/DO/DOUGW/Net-CIDR-Lite-0.21.tar.gz
 Source1  : http://http.debian.net/debian/pool/main/libn/libnet-cidr-lite-perl/libnet-cidr-lite-perl_0.21-2.debian.tar.xz
@@ -103,4 +103,4 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files perl
 %defattr(-,root,root,-)
-/usr/lib/perl5/vendor_perl/5.30.2/Net/CIDR/Lite.pm
+/usr/lib/perl5/vendor_perl/5.30.3/Net/CIDR/Lite.pm
